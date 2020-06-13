@@ -49,7 +49,7 @@ class MassLock extends \ExternalModules\AbstractExternalModule
 		$these_rights = \REDCap::getUserRights(USERID);
 		$my_rights = $these_rights[USERID];
 		if (!$my_rights[$right] && !SUPER_USER) {
-			$this->errors[] = "You must have 'Delete Records' privilege in user-rights to use this feature.";
+			$this->errors[] = "You must have 'Lock Records' privilege in user-rights to use this feature.";
 			$this->renderErrorPage();
 		}
 
@@ -78,9 +78,9 @@ class MassLock extends \ExternalModules\AbstractExternalModule
 			// Verify the current arm is valid
 			if (!isset($Proj->events[$arm])) {
 				$notes[] = "Unable to find arm $arm in this project - setting the first arm as active";
-				unset($_POST['delete']);           // In case this is a delete post, prevent the delete from happening
+				unset($_POST['lock']);          // In case this is a lock post, prevent the lock from happening
 				$events = $Proj->events;
-				$arm = key($events);            // Take the frist arm number as the current
+				$arm = key($events);            // Take the first arm number as the current
 			}
 			$this->arm = $arm;
 			$this->arm_id = $Proj->getArmIdFromArmNum($arm);
@@ -128,7 +128,7 @@ class MassLock extends \ExternalModules\AbstractExternalModule
 	}
 
 	public function handlePost() {
-		if (isset($_POST['delete']) && $_POST['delete'] == 'true') {
+		if (isset($_POST['lock']) && $_POST['lock'] == 'true') {
 
 
 			// DELETE THE RECORD
@@ -136,25 +136,26 @@ class MassLock extends \ExternalModules\AbstractExternalModule
 			$valid_records = array_intersect($post_records,$this->records);
 
 			if (count($valid_records) != count($post_records)) {
-				$this->errors[] = "Invalid records were requested for deletion.  Please try again.";
+				$this->errors[] = "Invalid records were requested for locking.  Please try again.";
 				self::renderErrorPage();
 			} else {
 				// Continue to process
 				global $Proj;
 				foreach ($valid_records as $record) {
 					// print "<br>Deleting $record";
-					\Records::deleteRecord(
-						$record,
-						$Proj->table_pk,
-						$Proj->multiple_arms,
-						$Proj->project_id['randomization'],
-						$Proj->project['status'],
-						$Proj->project['require_change_reason'],
-						$this->arm_id,
-						" (" . $this->getModuleName() . ")"
-					);
+                    // TODO: CHANGE TO LOCK RECORD
+					// \Records::deleteRecord(
+					// 	$record,
+					// 	$Proj->table_pk,
+					// 	$Proj->multiple_arms,
+					// 	$Proj->project_id['randomization'],
+					// 	$Proj->project['status'],
+					// 	$Proj->project['require_change_reason'],
+					// 	$this->arm_id,
+					// 	" (" . $this->getModuleName() . ")"
+					// );
 				}
-				$this->notes[] = "<b>Deleted " . count($valid_records) . " record" .
+				$this->notes[] = "<b>Locked " . count($valid_records) . " record" .
 					(count($valid_records > 1) ? "s" : "") .
 					"</b>";
 
