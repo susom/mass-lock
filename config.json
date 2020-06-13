@@ -1,0 +1,46 @@
+{
+	"name": "Mass Lock",
+
+	"namespace":"Stanford\\MassLock",
+
+	"description": "A module for locking records/forms/events in bulk",
+
+	"versions": [
+		{ "1.0.0": "Initial Development Version" }
+	],
+
+	"authors": [
+		{
+			"name": "Andy Martin",
+			"email": "andy123@stanford.edu",
+			"institution": "Stanford University"
+		},
+		{
+			"name": "Ahsley Lee",
+			"email": "alee2@bcchr.ca",
+			"institution": "BC Children’s Hospital Research Institute, University of British Columbia"
+		}
+	],
+
+	"permissions": [
+	],
+
+	"links": {
+		"control-center": [
+		],
+		"project": [
+			{
+				"name": "Mass Lock Records",
+				"icon": "lock",
+				"url": "project_mass_lock.php",
+				"TODO-restrict-view": "design"
+			}
+		]
+	},
+
+	"system-settings": [
+	],
+
+	"project-settings": [
+	]
+}
